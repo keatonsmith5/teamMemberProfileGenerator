@@ -43,7 +43,7 @@ const generateTeam = () => {
             message: "What is their email?"
         },
         {
-            when: (data) => {data.role === "Manager"},
+            when: data => data.role === "Manager",
             type: "input",
             name: "officeNumber",
             message: "What is their office number?"
@@ -70,8 +70,43 @@ const generateTeam = () => {
         else if (data.role === "Intern") {
             team.push(new Intern(data.role, data.name, data.id, data.email, data.school));
         }
-    })
-}
+        // console.log(team);
+        newEmployee();
+    }).catch(error => {
+        console.log(error);
+      });
+};
+
+const newEmployee = () => {
+    return inquirer
+    .prompt([
+        {
+            type: "list",
+            name: "addEmployee",
+            message: "Do you want to add another employee?",
+            choices: ["yes", "no"]
+        }
+    ]).then((data) => {
+        if (data.addEmployee === "yes") {
+            generateTeam();
+        }
+        else {
+            writeToFile();
+        }
+    });
+};
+
+const writeToFile = () => {
+    if (!fs.existsSync("./output")) {
+    fs.mkdirSync("./output");
+  }
+  fs.writeFile(outputPath, render(team), error => {
+    if (error) throw error;
+    console.log("Created successfully");
+  });
+};
+
+generateTeam();
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
