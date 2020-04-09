@@ -49,13 +49,13 @@ const generateTeam = () => {
             message: "What is their office number?"
         },
         {
-            when: (data) => {data.role === "Engineer"},
+            when: data => data.role === "Engineer",
             type: "input",
             name: "github",
             message: "What is their github username?"
         },
         {
-            when: (data) => {data.role === "Intern"},
+            when: data => data.role === "Intern",
             type: "input",
             name: "school",
             message: "Where do they go to school?"
@@ -70,7 +70,7 @@ const generateTeam = () => {
         else if (data.role === "Intern") {
             team.push(new Intern(data.role, data.name, data.id, data.email, data.school));
         }
-        // console.log(team);
+        console.log(team);
         newEmployee();
     }).catch(error => {
         console.log(error);
@@ -86,7 +86,7 @@ const newEmployee = () => {
             message: "Do you want to add another employee?",
             choices: ["yes", "no"]
         }
-    ]).then((data) => {
+    ]).then(data => {
         if (data.addEmployee === "yes") {
             generateTeam();
         }
